@@ -1,2 +1,2 @@
-import {name} from './component.js';
+import {name} from './component';
 console.log(name);

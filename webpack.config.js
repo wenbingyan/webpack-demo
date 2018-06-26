@@ -16,6 +16,12 @@ module.exports = {
 	devServer: {
 		stats: {color:true},
 		port: 8080,
-		contentBase: 'build'
+		contentBase: 'build',
+		inline: true,
+		open: true
+	},
+	resolve: {
+		extensions: ["",".js",".css",".json"]
 	}
 }
+
