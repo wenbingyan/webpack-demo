@@ -27,3 +27,28 @@ $    webpack index.js bundle.js
 - webpack --progress 显示构建百分比进度
 - webpack --display-error-details 显示打包过程中的出错信息(比如 webpack寻找模块的过程)
 - webpack --profile 输出性能数据，可以看到每一步的耗时
+
+## 2. 使用webpack配置文件
+### 2.1 初始化git
+```
+$ mkdir webpack-demos && cd webpack-demos && git init
+```
+### 2.2 初始化项目
+```
+$ npm init -y
+```
+### 2.3 增加.gitignore
+创建文件
+```
+$ touch.gitignore
+```
+在文件中增加以下内容
+```
+node_modules
+.idea
+```
+### 2.4 在项目根目录下创建src和build目录
+src目录存放源码，build目录存放编译打包之后的资源
+```
+$ mkdir src build
+```
