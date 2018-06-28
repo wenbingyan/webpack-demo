@@ -52,3 +52,24 @@ src目录存放源码，build目录存放编译打包之后的资源
 ```
 $ mkdir src build
 ```
+### 2.5 增加以下文件
+#### 2.5.1 src/component.js
+```
+$ cd src && touch component.js
+exports.name = 'zfpx';
+```
+#### 2.5.2 src/index.js
+```
+$ cd src && touch index.js
+var comp = require('./component.js');
+console.log(comp.name);
+```
+####2.5.3 build/index.html
+```
+$ cd build && touch index.html
+<script src="bundle.js"></script>
+```
+### 2.6 下载webpack
+```
+$ npm install webpack --save-dev
+```
