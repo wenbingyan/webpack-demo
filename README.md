@@ -73,3 +73,103 @@ $ cd build && touch index.html
 ```
 $ npm install webpack --save-dev
 ```
+### 2.7 创建webpack的配置文件
+```
+$ touch webpack.config.js
+```
+配置webpack.config.js
+```
+var path = require('path');
+module.exports = {
+     //打包的入口文件  String|Object
+    entry: path.resolve(__dirname, 'src/index.js'),
+    output: { //配置打包结果     Object
+        //定义输出文件路径
+        path: path.resolve(__dirname, 'build'),
+        //指定打包文件名称
+        filename: 'bundle.js'
+    },
+};
+```
+请注意webpack.config.js这个文件名是定死的，不然会报Output filename not configured的错误；另外，如果不按这个命名，那么在webpack运行的时候需要通过--config这个参数指定配置文件，比如：webpack --config conf.js
+
+### 2.8 修改 package.json
+```
+  "scripts": {
++    "build": "webpack"
+  }
+```  
+### 2.9 执行命令进行编译
+```
+$ npm run build
+```
+> build目录下会新增了一个bundle.js文件，里面就存放着打包后的目录
+
+## 3. loader
+使用babel-loader来解析es6写成的模块 加载器列表
+
+### 3.1 安装loader
+babel-loader可以将ES6的代码转为ES5的代码 babel官网
+```
+$ npm install babel-loader babel-core --save-dev
+$ npm install babel-preset-es2015 babel-preset-stage-0 --save-dev
+```
+### 3.2 修改webpack.config.js
+```
+module.exports = {
+    ////打包的入口文件  String|Object
+    entry: path.resolve(__dirname, 'src/index.js'),
+    output: {
+        //定义输出文件路径
+        path: path.resolve(__dirname, 'build'),
+        //指定打包文件名称
+        filename: 'bundle.js'
+    },
+    //定义了对模块的处理逻辑     Object
++    module: {
++        loaders: [ 定义了一系列的加载器   Array
++            {
++                test: /\.js$/, //正则，匹配到的文件后缀名
++                // loader/loaders：string|array，处理匹配到的文件
++                loader: 'babel-loader'
++                // include：String|Array  包含的文件夹
++                 // exclude：String|Array  排除的文件夹
++
++            }
++        ]
++    }
+};
+```
+> "-loader"其实是可以省略不写的，多个loader之间用“!”连接起来 loaders是一个数组
+
+### 3.3 添加.babelrc文件
+内容如下:
+```
+{
+   "presets": ["es2015", "stage-0"],
+   "plugins": []
+}
+```
+### 3.4 修改src/component.js
+```
+-  exports.name = 'zfpx';
++  export var name = 'zfpx';
+```
+### 3.4 修改src/index.js
+```
+-  var comp = require('./component.js');
+-  console.log(comp.name);
++  import {name} from './component.js';
++  console.log(name);
+```
+### 3.5 增加.babelrc文件
+```
+{
+  "presets": ["es2015", "stage-0"],
+  "plugins": []
+}
+```
+### 3.6 执行命令进行编译
+```
+$ npm run build
+```
