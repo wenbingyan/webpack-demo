@@ -173,3 +173,75 @@ module.exports = {
 ```
 $ npm run build
 ```
+## 4. devServer
+webpack-dev-server是一个Web服务器,可以预览项目，并且当修改源码后可以实时刷新页面 server配置
+
+### 4.1 安装devServer
+```
+$ npm install webpack-dev-server --save-dev
+```
+### 4.3 修改package.json
+```
+"scripts": {
++    "dev": "webpack-dev-server"
+}
+```
+### 4.4 配置webpack.config.js
+```
++    devServer: {
++        stats: { colors: true }, //显示颜色
++        port: 8080,//端口
++        contentBase: 'build',//指定静态文件的根目录
++    }
+```
+### 4.5 执行命令进行启动服务
+```
+$ npm run dev
+```
+> 启动此服务的时候，编译后的产出文件放在内存里,在build目录下看不见,但也不会删除原来已经有的文件
+
+### 4.6 预览项目
+打开浏览器中访问 http://localhost:8080
+
+### 4.7 proxy模拟后台接口
+#### 4.7.1 修改配置webpack.config.js
+```
+   //重写url
++ function rewriteUrl(replacePath) {
++     return function (req, opt) {
+          //取得?所在的索引
++         var queryIndex = req.url.indexOf('?');
+          //取得查询字符串的内容
++         var query = queryIndex >= 0 ? req.url.substr(queryIndex) : "";
+          //$1取自path匹配到的真实路径中的第一个分组
++         //把proxy的path替换为 '/$1\.json',
++         req.url = req.path.replace(opt.path, replacePath) + query;
++     };
++ }
+
+    devServer: {
+
+        stats: { colors: true }, //显示颜色
+        port: 8080,//端口
+        contentBase: 'build',//指定静态文件的根目录
++       proxy: [
++           {
+                //替换符合此正则的接口路径
++               path: /^\/api\/(.*)/,
+                //目标域名端口
++               target: "http://localhost:8080/",
+                //重新定向到新的地址
+                //$1取自path正则匹配到的真实路径的第一个分组
++               rewrite: rewriteUrl('/$1\.json'),
+                 //修改来源地址
++               changeOrigin: true
++           }
++       ]
+    }
+```
+#### 4.7.2 在build目录下添加 book.json
+```
+{"name":"javascript"}
+```
+#### 4.7.3 直接访问此接口
+在浏览器输入此地址 http://localhost:8080/api/book 将会被重写向到 http://localhost:8080/book.json
