@@ -245,3 +245,63 @@ $ npm run dev
 ```
 #### 4.7.3 直接访问此接口
 在浏览器输入此地址 http://localhost:8080/api/book 将会被重写向到 http://localhost:8080/book.json
+
+
+## 5. resolve解析
+### 5.1 extension
+指定extension之后可以不用在require或是import的时候加文件扩展名,会依次尝试添加扩展名进行匹配
+
+#### 5.1.1 修改 webpack.config.js
+```
++ resolve: {
+    //自动补全后缀，注意第一个必须是空字符串,后缀一定以点开头
++   extensions: ["",".js",".css",".json"],
++ },
+```
+#### 5.1.2 修改src/index.js
+```
+- import comp from './component.js';
++ import comp from './component';
+```
+###5.2 alias
+配置别名可以加快webpack查找模块的速度
+
+- 每当引入jquery模块的时候，它会直接引入jqueryPath,而不需要从node_modules文件夹中按模块的查找规则查找
+- 不需要webpack去解析jquery.js文件
+#### 5.2.1 先安装jquery
+```
+$ npm install jquery --save
+```
+#### 5.2.2 修改 webpack.config.js
+```
++ var jqueryPath = path.join(__dirname,
++  "./node_modules/jquery/dist/jquery.js");
+
+resolve: {
+       extensions: ["",".js",".css",".json"],
++        alias: {
++            'jquery': jqueryPath
++        }
+    },
+
+module: {
+       loaders: [
+           {
+               test: /\.js$/,
+               loader: 'babel-loader'
+           }
+       ],
+       //如果你 确定一个模块中没有其它新的依赖 就可以配置这项，webpack 将不再扫描这个文件中的依赖
++       noParse: [jqueryPath]
+},
+```
+#### 5.2.3 修改 build/index.html
+```
++ <div id="app"></div>
+```
+#### 5.2.4 修改 src/index.js
+```
++import $ from 'jquery'
+- document.write(comp);
++ $('#app').html(comp);
+```
