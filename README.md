@@ -336,3 +336,48 @@ $ npm install less style-loader css-loader less-loader --save-dev
 - <div id="app"></div>
 + <div id="app" class="red"></div>
 ```
+##7. 资源文件的加载
+实现CSS、图标、图片等资源文件加载
+
+### 7.1 安装bootstrap和相应的loader
+```
+$ npm install bootstrap --save
+$ npm install file-loader url-loader --save-dev
+```
+### 7.2 修改 webpack.config.js
+设置css文件和图标文件的加载器
+```
+ devServer: {
+        stats: {colors: true}, //显示颜色
+
++ {
++     test: /\.css/,
++     loader: 'style!css'
++ },
++ {
++      test: /\.(woff|woff2|ttf|svg|eot)$/,
++      loader: "url?limit=8192"
++ },
++ {
++       test: /\.(jpg|png)$/,
++       loader: "url?limit=8192"
++  }
+```
+> 配置信息的参数“?limit=8192”表示将所有小于8kb的图片都转为base64形式(其实应该说超过8kb的才使用url-loader 来映射到文件，否则转为data url形式)
+
+DataURL和图片
+
+### 7.3 修改 src/index.js
+```
++  import 'bootstrap/dist/css/bootstrap.css';
++  var img = document.createElement("img");
++  img.className = 'img-circle';
++  img.src = require("./zfpx.jpg");
++  document.body.appendChild(img);
+```
+### 7.4 修改 build/index.html
+```
++ <button class="btn btn-success">bootstrap按钮</button>
++ <span class="glyphicon glyphicon-qrcode"></span>
++ <img src="/zfpx.jpg" class="img-rounded" alt="lufy">
+```
