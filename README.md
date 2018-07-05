@@ -381,3 +381,11 @@ DataURL和图片
 + <span class="glyphicon glyphicon-qrcode"></span>
 + <img src="/zfpx.jpg" class="img-rounded" alt="lufy">
 ```
+## 8. 自动刷新
+在源码修改之后可以自动刷新页面 修改webpack.config.js
+```
+         contentBase: 'build',
++        inline:true, //设置自动刷新
+         proxy: [
+```
+
