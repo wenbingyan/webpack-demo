@@ -305,3 +305,34 @@ module: {
 - document.write(comp);
 + $('#app').html(comp);
 ```
+## 6. 解析less样式文件
+### 6.1 安装loader
+- less-loader负责把less源码转成css代码
+- css-loader负责读取css代码
+- style-loader负责在css代码转变成style标签并作为页内样式插入到页面中去
+```
+$ npm install less style-loader css-loader less-loader --save-dev
+```
+### 6.2 修改配置文件webpack.config.js
+```
++  {
++        test: /\.less/,
++        loader: 'style!css!less'
++  }
+```
+### 6.3 增加less文件 src/index.less
+```
+@color: red;
+.red {
+  color: @color;
+}
+```
+### 6.4 在src/index.js中引入'less'文件
+```
++  require('./index.less');
+```
+### 6.5 修改build/index.html,使用red
+```
+- <div id="app"></div>
++ <div id="app" class="red"></div>
+```
