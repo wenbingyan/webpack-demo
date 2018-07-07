@@ -388,4 +388,35 @@ DataURL和图片
 +        inline:true, //设置自动刷新
          proxy: [
 ```
-
+## 9. 自动产出html
+### 9.1 创建html模板文件
+```
+$ cd src && touch index.html
+```
+### 9.2 下载webpack插件
+```
+npm install html-webpack-plugin --save-dev
+```
+### 9.3 修改webpack.config.js
+```
++  var HtmlWebpackPlugin = require('html-webpack-plugin');
++  plugins: [
++        new HtmlWebpackPlugin({
++          title: 'zhufeng-react',//标题
++          template: './src/index.html', //模板文件
++          filename:'./index.html' //产出后的文件名称
++        })
++  ]
+```
+## 10. 自动打开浏览器
+### 10.1 安装插件
+```
+$ npm install open-browser-webpack-plugin --save-dev
+```
+### 10.2 修改webpack.config.js
+```
++ var openBrowserWebpackPlugin = require('open-browser-webpack-plugin');
++ plugin: [
++   new openBrowserWebpackPlugin({ url: 'http://localhost:8080' })
++ ]
+```
