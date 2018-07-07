@@ -420,3 +420,30 @@ $ npm install open-browser-webpack-plugin --save-dev
 +   new openBrowserWebpackPlugin({ url: 'http://localhost:8080' })
 + ]
 ```
+## 11. 区分环境标识
+### 11.1 在脚本中设置环境变量
+WIN系统
+```
++ "scripts": {
++    "publish-dev": "set BUILD_ENV=dev && webpack-dev-server",
++    "publish-prod": "set BUILD_ENV=prod && webpack-dev-server"
++ }
+```
+MAC系统
+```
++ "scripts": {
++    "publish-dev": "export BUILD_ENV=dev && webpack-dev-server",
++    "publish-prod": "export BUILD_ENV=prod && webpack-dev-server"
++ }
+```
+### 11.2 修改webpack.config.js
+```
++ var webpack = require('webpack');
++ var definePlugin = new webpack.DefinePlugin({
++     __DEV__: (process.env.BUILD_DEV||'dev').trim() == 'dev'
++ });
+
+ plugins: [
++        definePlugin,
+        new HtmlWebpackPlugin
+```
