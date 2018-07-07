@@ -447,3 +447,21 @@ MAC系统
 +        definePlugin,
         new HtmlWebpackPlugin
 ```
+## 12. 暴露全局对象
+### 12.1 安装暴露组件
+```
+$ npm install expose-loader --save-dev
+```
+### 12.2 暴露到全局对象
+```
++            {
++                test: /jquery.js$/,
++                loader: "expose?jQuery"
++            }
+```
+### 12.3 在html中使用
+```
++ <script>
++     console.log(window.jQuery);
++ </script>
+```
