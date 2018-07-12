@@ -465,3 +465,27 @@ $ npm install expose-loader --save-dev
 +     console.log(window.jQuery);
 + </script>
 ```
+## 13. css文件单独加载
+### 13.1 安装插件
+```
+$ npm install extract-text-webpack-plugin --save-dev
+```
+### 13.2 修改webpack.config.js
+```
++      var ExtractTextPlugin = require("extract-text-webpack-plugin");
+
++      {
++           test: /\.less/,
++           loader: ExtractTextPlugin.extract("style-loader"
+                     , "css-loader!less-loader")
++      },
++      {
++           test: /\.css/,
++           loader: ExtractTextPlugin.extract("style-loader"
+                     , "css-loader")
++      }
+
+        plugins: [
+        definePlugin,
++        new ExtractTextPlugin("bundle.css"),
+```
