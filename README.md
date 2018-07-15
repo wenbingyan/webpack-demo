@@ -489,3 +489,20 @@ $ npm install extract-text-webpack-plugin --save-dev
         definePlugin,
 +        new ExtractTextPlugin("bundle.css"),
 ```
+## 14. 应用代码和第三方代码分离
+### 14.1 修改webpack.config.js
+```
+- entry: path.resolve(__dirname, 'src/index.js'),//入口文件
++ entry: {
++        index:path.resolve(__dirname, 'src/index.js'),
++        vendor: ['jquery'],
++    }
+ output: {
+        path: path.resolve(__dirname, 'build'),//输出路径
+-        filename: 'bundle.js' //输出文件名
++        filename: '[name].js' //输出动态文件名
+    },
+//如果没有这句话，vendor只是一个普通的入口文件而矣,有了此语句会把vendor中的模块
+//从index中分离出来,不再包含在打包出来的index.js中,会成生一个zfvendor.js文件
++ new webpack.optimize.CommonsChunkPlugin('vendor', 'zfvendor.js'),
+```
