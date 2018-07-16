@@ -506,3 +506,41 @@ $ npm install extract-text-webpack-plugin --save-dev
 //从index中分离出来,不再包含在打包出来的index.js中,会成生一个zfvendor.js文件
 + new webpack.optimize.CommonsChunkPlugin('vendor', 'zfvendor.js'),
 ```
+## 15. 提取其它公共的代码
+### 15.1 增加a.js和b.js
+```
+components.js
+export var  name = 'zfpx';
+export var  age = 8;
+a.js
+var {name} = require('./component');
+console.log(name);
+b.js
+var {name} = require('./component');
+console.log(age);
+```
+### 15.2 修改webpack.config.js
+```
+    entry: {
++        a:path.resolve('src/a.js'),
++        b: path.resolve('src/b.js')
+    }
+
+-   new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
++   new webpack.optimize.CommonsChunkPlugin('common.js'),
+
+  plugins:[
++    new htmlWebpackPlugin({
++                title:'珠峰Webpack',
++                template:'./src/index.html',
++                filename:'./a.html',
++                chunks:['a','common.js']//包含产出的资源
++           }),
++    new htmlWebpackPlugin({
++                title:'珠峰Webpack',
++                template:'./src/index.html',
++                filename:'./b.html',
++                chunks:['b','common.js']//包含产出的资源
++            })
+   ]
+```
