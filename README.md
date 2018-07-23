@@ -544,3 +544,9 @@ console.log(age);
 +            })
    ]
 ```
+## 16. 添加哈希值
+### 16.1 修改webpack.config.js
+```
+- filename: '[name].js' //输出文件名
++ filename: '[name].[hash].js' //输出文件名
+```
