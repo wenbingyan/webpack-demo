@@ -550,3 +550,25 @@ console.log(age);
 - filename: '[name].js' //输出文件名
 + filename: '[name].[hash].js' //输出文件名
 ```
+## 17. 压缩资源
+### 17.1 修改webpack.config.js
+```
++        new webpack.optimize.UglifyJsPlugin({
++            compress: {
++                warnings: false
++            }
++        }),
++        new webpack.optimize.MinChunkSizePlugin({
++            compress: {
++                warnings: false
++            }
++        }),
++        // 查找相等或近似的模块，避免在最终生成的文件中出现重复的模块
++        new webpack.optimize.DedupePlugin(),
++        // 按引用频度来排序 ID，以便达到减少文件大小的效果
++        new webpack.optimize.OccurenceOrderPlugin(),
++        new webpack.optimize.AggressiveMergingPlugin({
++            minSizeReduce: 1.5,
++            moveToParents: true
++        })
+```
