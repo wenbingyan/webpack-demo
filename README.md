@@ -572,3 +572,62 @@ console.log(age);
 +            moveToParents: true
 +        })
 ```
+## 18. 打包react
+### 18.1 安装
+```
+$ npm install react react-dom babel-preset-react --save-dev
+```
+### 18.2 增加webpack.config.react.js
+```
+var path = require('path');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+var openBrowserWebpackPlugin = require('open-browser-webpack-plugin');
+var webpack = require('webpack');
+
+module.exports = {
+    entry: path.resolve(__dirname,'react/index.js'),
+    output: {
+        path: path.resolve(__dirname, 'build'),//输出路径
+        filename: 'bundle.js' //输出文件名
+    },
+    module: {
+        loaders: [
+            {
+                test: /\.jsx?$/,
+                loader: 'babel',
+                query: { presets: ["es2015","react"] },
+                exclude:/node_modules/,
+                include:path.resolve(__dirname,'react')
+            }
+        ],
+    },
+    devServer: {
+        inline:true,
+        stats: {colors: true}, //显示颜色
+        port: 8080,//端口
+        contentBase: 'build',//指定静态文件的根目录
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            title: '珠峰React课程',
+            template: './react/index.html'
+        }),
+        new openBrowserWebpackPlugin({ url: 'http://localhost:8080' }),
+    ]
+};
+```
+关于babel的预设有三种传参方法
+- 在.babelrc 中配置 "presets": ["es2015", "stage-0","react"],
+- 在loader中增加 query: { presets: ["es2015","react"] },,这会对所有的loader生效
+- loaders: ['react-hot','babel?presets[]=es2015&presets[]=react'] 只针对某个loader生效
+### 18.3 在package.json中增加
+```
++ "scripts": {
++     "build-react": "webpack --config webpack.config.react.js",
++     "start-react":"webpack-dev-server --config webpack.config.react.js"
++   }
+```
+### 18.4 启动服务
+```
+npm run start-react
+```
