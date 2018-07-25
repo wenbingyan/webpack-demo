@@ -631,3 +631,33 @@ module.exports = {
 ```
 npm run start-react
 ```
+## 19. react模块热加载
+### 19.1 安装
+```
+$ npm install react-hot-loader --save-dev
+```
+### 19.2 修改webpack.config.react.js
+```
+{
+     test: /\.jsx?$/,
+-    loaders: ['babel?presets[]=es2015&presets[]=react'],
+-     query: { presets: ["es2015","react"] },
++     loaders: ['react-hot','babel?presets[]=es2015&presets[]=react'],
+      exclude:/node_modules/,
+      include:path.resolve(__dirname,'react')
+     }
+     devServer: {
++       hot:true,
+        inline:true,
+     plugins: [
++    new webpack.HotModuleReplacementPlugin()
+      ]
+```
+> 注意: 如果有多个loader的话，就不可以用query属性传参了，只能用?查询字符串传参数
+
+### 19.4 启动服务
+```
+npm run start-react
+```
+> 只要修改了源代码，就会在不刷新页面的情况下刷新某个组件
+
