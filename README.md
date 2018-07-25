@@ -660,4 +660,33 @@ $ npm install react-hot-loader --save-dev
 npm run start-react
 ```
 > 只要修改了源代码，就会在不刷新页面的情况下刷新某个组件
+## 20 重命名类名
+为了避免不同的组件使用的类名重复可以对这些类名进行重命名
+
+### 20.1 增加style.css文件
+```
+.red{
+    color:green;
+}
+```
+### 20.2 修改webpack.config.react.js
+```
++ {
++  test: /\.css/,
++  loaders: [ 'style-loader',
++   'css-loader?modules&localIdentName=[name]__[local]___[hash:base64:5]']
++ }
+```
+### 20.3 修改 react/app.js
+```
++    import styles from './style.css'
+     export default class App extends React.Component{
+         render(){
+             return (
+-                <h1>欢迎光临珠峰培训</h1>
++                <h1 className={styles.red}>欢迎光临珠峰培训</h1>
+            )
+        }
+    }
+```
 
