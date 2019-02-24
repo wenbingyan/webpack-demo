@@ -1,2 +1,2 @@
 let test = 'it is test'
-const aa = 34;
+const aa = 0;
